@@ -10,13 +10,13 @@ import { CelebrationComponent } from './celebration/celebration.component';
 export class CelebrationHostComponent {
   private readonly sessionService = inject(SessionService);
   private readonly viewContainerRef = inject(ViewContainerRef);
-  private previousSessions = 0;
+  private previousSessions = this.sessionService.sessionStats().totalSessions;
 
   constructor() {
     // Watch for session completion
     effect(() => {
       const stats = this.sessionService.sessionStats();
-      if (stats.totalSessions > this.previousSessions && this.previousSessions > 0) {
+      if (stats.totalSessions > this.previousSessions) {
         this.showCelebration();
       }
       this.previousSessions = stats.totalSessions;
@@ -24,12 +24,21 @@ export class CelebrationHostComponent {
   }
 
   private showCelebration(): void {
+    const activeTask = this.sessionService.activeTask();
+    const taskTitle = activeTask?.title || 'Focus Session';
+    const stats = this.sessionService.sessionStats();
+    
     // Use the new createComponent API
     const componentRef = this.viewContainerRef.createComponent(CelebrationComponent);
     
-    // Auto-remove after animation
-    setTimeout(() => {
+    // Pass inputs
+    componentRef.setInput('taskTitle', taskTitle);
+    componentRef.setInput('duration', 25);
+    componentRef.setInput('scoreBoost', 10);
+    
+    // Listen for close event and destroy component
+    componentRef.instance.closed.subscribe(() => {
       componentRef.destroy();
-    }, 4000);
+    });
   }
 }

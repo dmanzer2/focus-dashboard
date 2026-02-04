@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../services/session.service';
 
@@ -13,8 +13,12 @@ export class CelebrationComponent {
   protected readonly score = this.sessionService.productivityScore;
   protected readonly stats = this.sessionService.sessionStats;
   protected readonly visible = signal(true);
+  
+  readonly closed = output<void>();
 
   protected close(): void {
     this.visible.set(false);
+    // Delay emit slightly to allow fade-out animation
+    setTimeout(() => this.closed.emit(), 300);
   }
 }
