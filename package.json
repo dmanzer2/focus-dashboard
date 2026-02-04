@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "predeploy": "npm run build:prod",
-    "deploy": "npx angular-cli-ghpages --dir=dist/focus-dashboard --no-silent"
+    "deploy": "npx angular-cli-ghpages --dir=dist/focus-dashboard/browser --no-silent"
   },
   "prettier": {
     "printWidth": 100,
