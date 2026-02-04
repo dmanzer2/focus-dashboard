@@ -1,0 +1,184 @@
+<div class="task-list-container">
+  <div class="task-list-header">
+    <h2>Task Stack</h2>
+    <div class="task-count">
+      {{ activeTasks().length }} active
+    </div>
+  </div>
+
+  <!-- Add Task Form -->
+  <form class="add-task-form" (submit)="addTask(); $event.preventDefault()">
+    <div class="form-group">
+      <input 
+        type="text"
+        class="task-input"
+        placeholder="What needs your focus?"
+        [value]="newTaskTitle()"
+        (input)="newTaskTitle.set($any($event.target).value)"
+        aria-label="New task title"
+        maxlength="100"
+      />
+    </div>
+    
+    <div class="form-actions">
+      <div class="difficulty-selector">
+        <button 
+          type="button"
+          class="difficulty-btn"
+          [class.active]="newTaskDifficulty() === 'easy'"
+          (click)="newTaskDifficulty.set('easy')"
+          aria-label="Easy difficulty">
+          Easy
+        </button>
+        <button 
+          type="button"
+          class="difficulty-btn"
+          [class.active]="newTaskDifficulty() === 'medium'"
+          (click)="newTaskDifficulty.set('medium')"
+          aria-label="Medium difficulty">
+          Medium
+        </button>
+        <button 
+          type="button"
+          class="difficulty-btn"
+          [class.active]="newTaskDifficulty() === 'hard'"
+          (click)="newTaskDifficulty.set('hard')"
+          aria-label="Hard difficulty">
+          Hard
+        </button>
+      </div>
+      
+      <button 
+        type="submit" 
+        class="add-btn"
+        [disabled]="!newTaskTitle().trim()"
+        aria-label="Add task">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Add
+      </button>
+    </div>
+  </form>
+
+  <!-- Active Tasks -->
+  <div class="tasks-section">
+    @if (activeTasks().length === 0) {
+      <div class="empty-state">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <p>No tasks yet. Add one to start your focus session!</p>
+      </div>
+    } @else {
+      <div class="task-cards">
+        @for (task of activeTasks(); track trackByTaskId($index, task)) {
+          <div 
+            class="task-card"
+            [class.active]="activeTask()?.id === task.id"
+            [attr.data-difficulty]="task.difficulty"
+            (click)="selectTask(task)"
+            role="button"
+            tabindex="0"
+            [attr.aria-pressed]="activeTask()?.id === task.id"
+            [attr.aria-label]="'Task: ' + task.title">
+            
+            <div class="task-card-content">
+              <div class="task-header">
+                <button 
+                  class="checkbox"
+                  (click)="toggleComplete(task.id, $event)"
+                  [attr.aria-label]="'Complete task: ' + task.title"
+                  aria-checked="false">
+                  <svg class="checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </button>
+                
+                <div class="task-info">
+                  <div class="task-title">{{ task.title }}</div>
+                  <div class="task-meta">
+                    <span class="difficulty-badge" [attr.data-difficulty]="task.difficulty">
+                      {{ task.difficulty }}
+                    </span>
+                    @if (task.difficulty === 'easy') {
+                      <span class="duration">15 min</span>
+                    } @else if (task.difficulty === 'medium') {
+                      <span class="duration">25 min</span>
+                    } @else {
+                      <span class="duration">45 min</span>
+                    }
+                  </div>
+                </div>
+              </div>
+              
+              <button 
+                class="delete-btn"
+                (click)="deleteTask(task.id, $event)"
+                [attr.aria-label]="'Delete task: ' + task.title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Completed Tasks Section -->
+  @if (completedTasks().length > 0) {
+    <div class="completed-section">
+      <button 
+        class="completed-toggle"
+        (click)="toggleShowCompleted()"
+        [attr.aria-expanded]="showCompleted()">
+        <svg class="chevron" [class.open]="showCompleted()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+        Completed ({{ completedTasks().length }})
+      </button>
+      
+      @if (showCompleted()) {
+        <div class="completed-tasks">
+          @for (task of completedTasks(); track trackByTaskId($index, task)) {
+            <div class="task-card completed" [attr.data-difficulty]="task.difficulty">
+              <div class="task-card-content">
+                <div class="task-header">
+                  <button 
+                    class="checkbox checked"
+                    (click)="toggleComplete(task.id, $event)"
+                    [attr.aria-label]="'Uncomplete task: ' + task.title"
+                    aria-checked="true">
+                    <svg class="checkmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </button>
+                  
+                  <div class="task-info">
+                    <div class="task-title">{{ task.title }}</div>
+                  </div>
+                </div>
+                
+                <button 
+                  class="delete-btn"
+                  (click)="deleteTask(task.id, $event)"
+                  [attr.aria-label]="'Delete task: ' + task.title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
