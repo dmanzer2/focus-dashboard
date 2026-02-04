@@ -1,0 +1,54 @@
+<div class="stats-container">
+  <div class="productivity-score">
+    <div class="score-circle" [style.--score]="productivityScore() + '%'">
+      <svg class="score-ring" viewBox="0 0 120 120">
+        <circle class="score-ring-bg" cx="60" cy="60" r="54" />
+        <circle class="score-ring-progress" cx="60" cy="60" r="54" />
+      </svg>
+      <div class="score-value">
+        <span class="score-number">{{ productivityScore() }}</span>
+        <span class="score-label">Flow Score</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ stats().totalSessions }}</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ stats().completedTasks }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ stats().totalFocusMinutes }}</div>
+        <div class="stat-label">Focus Minutes</div>
+      </div>
+    </div>
+  </div>
+</div>
