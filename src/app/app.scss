@@ -1,0 +1,165 @@
+@use '../styles.scss' as *;
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-header {
+  padding: 2rem 2rem 1rem;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--focus-color);
+    filter: drop-shadow(0 0 10px rgba(100, 255, 218, 0.5));
+  }
+}
+
+.app-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 400;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.dashboard-grid {
+  // display: grid;
+  grid-template-columns: minmax(320px, 380px) minmax(400px, 500px) minmax(320px, 380px);
+  gap: 3rem;
+  max-width: 1400px;
+  width: 100%;
+  align-items: start;
+  display: inline-flex;
+}
+
+.timer-section,
+.tasks-section,
+.stats-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* Breathing background effect */
+.breathing-bg {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(
+      circle at 30% 50%,
+      rgba(100, 255, 218, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 50%,
+      rgba(147, 51, 234, 0.06) 0%,
+      transparent 50%
+    );
+  animation: breathing-bg 8s ease-in-out infinite;
+}
+
+@keyframes breathing-bg {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.1) rotate(2deg);
+    opacity: 0.6;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1400px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 600px;
+  }
+  
+  .timer-section,
+  .tasks-section,
+  .stats-section {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1.5rem 1rem 0.5rem;
+  }
+  
+  .app-title {
+    font-size: 1.5rem;
+    
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .app-subtitle {
+    font-size: 0.875rem;
+  }
+  
+  .app-main {
+    padding: 1rem;
+  }
+  
+  .dashboard-grid {
+    gap: 1.5rem;
+  }
+  
+  .timer-section,
+  .tasks-section,
+  .stats-section {
+    padding: 1.5rem;
+  }
+}
