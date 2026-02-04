@@ -1,0 +1,176 @@
+@use '../../../styles.scss' as *;
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  position: relative;
+
+  // Breathing effect animation based on intensity
+  animation: breathing calc(2s - (1s * var(--breathing-intensity, 0.3))) ease-in-out infinite;
+}
+
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.timer-ring {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  filter: drop-shadow(0 0 20px rgba(100, 255, 218, 0.3));
+  overflow: visible
+}
+
+.progress-ring-background {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 8;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke: var(--focus-color);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 565.5;
+  transition: stroke-dashoffset 1s linear;
+  
+  // Glow effect increases with progress
+  filter: drop-shadow(0 0 calc(10px + 20px * var(--breathing-intensity, 0.3)) var(--focus-color));
+}
+
+.timer-display {
+  text-align: center;
+  z-index: 1;
+  user-select: none;
+}
+
+.time-text {
+  font-size: 4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.task-name {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-difficulty {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  letter-spacing: 0.05em;
+  
+  &[data-difficulty="easy"] {
+    background: rgba(52, 211, 153, 0.2);
+    color: #34D399;
+  }
+  
+  &[data-difficulty="medium"] {
+    background: rgba(251, 191, 36, 0.2);
+    color: #FBBF24;
+  }
+  
+  &[data-difficulty="hard"] {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+  }
+}
+
+.no-task {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  &:not(:disabled):active {
+    transform: translateY(0);
+  }
+}
+
+.control-btn-primary {
+  background: var(--focus-color);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 20px rgba(100, 255, 218, 0.3);
+
+  &:not(:disabled):hover {
+    box-shadow: 0 6px 30px rgba(100, 255, 218, 0.5);
+  }
+}
+
+.control-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:not(:disabled):hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+  }
+}
