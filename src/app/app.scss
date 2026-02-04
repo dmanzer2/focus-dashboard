@@ -57,13 +57,11 @@
 }
 
 .dashboard-grid {
-  // display: grid;
-  grid-template-columns: minmax(320px, 380px) minmax(400px, 500px) minmax(320px, 380px);
-  gap: 3rem;
-  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
   width: 100%;
-  align-items: start;
-  display: inline-flex;
+  max-width: 100%;
 }
 
 .timer-section,
