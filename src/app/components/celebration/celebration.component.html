@@ -1,0 +1,44 @@
+@if (visible()) {
+  <div class="celebration-overlay" (click)="close()">
+    <div class="celebration-card" (click)="$event.stopPropagation()">
+      <!-- Confetti effect -->
+      <div class="confetti">
+        @for (i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]; track i) {
+          <div class="confetti-piece" [style.--delay]="i * 0.1 + 's'"></div>
+        }
+      </div>
+      
+      <!-- Content -->
+      <div class="celebration-content">
+        <div class="celebration-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        </div>
+        
+        <h2 class="celebration-title">Session Complete!</h2>
+        <p class="celebration-message">Great work! You've completed another focus session.</p>
+        
+        <div class="celebration-stats">
+          <div class="stat">
+            <div class="stat-value">{{ stats().totalSessions }}</div>
+            <div class="stat-label">Total Sessions</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">{{ score() }}</div>
+            <div class="stat-label">Flow Score</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">{{ stats().completedTasks }}</div>
+            <div class="stat-label">Tasks Done</div>
+          </div>
+        </div>
+        
+        <button class="close-btn" (click)="close()" aria-label="Close celebration">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+}
