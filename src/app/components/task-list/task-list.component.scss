@@ -68,12 +68,14 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .difficulty-selector {
   display: flex;
   gap: 0.5rem;
   flex: 1;
+  min-width: 200px;
 }
 
 .difficulty-btn {
@@ -383,4 +385,14 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 0.5rem;
+}
+@media (max-width: 500px) {
+  .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .difficulty-selector {
+    width: 100%;
+  }
 }
